@@ -1,0 +1,28 @@
+{
+  "id": "./",
+  "name": "OXFORD 3.0 · Centro de control",
+  "short_name": "OXFORD 3.0",
+  "description": "Centro de control académico, ingeniería, entrenamiento y proyectos.",
+  "lang": "es",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#171717",
+  "theme_color": "#171717",
+  "icons": [
+    {
+      "src": "./icon-oxford.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-oxford.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
