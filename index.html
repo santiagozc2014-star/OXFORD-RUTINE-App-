@@ -69,5 +69,5 @@ $('form').onsubmit=e=>{e.preventDefault();let name=$('name').value.trim();if(!na
 $('notes').value=data.notes||'';$('notes').oninput=()=>{data.notes=$('notes').value;save()};
 $('export').onclick=()=>{save();let a=document.createElement('a'),url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.href=url;a.download='oxford-3-backup.json';a.click();URL.revokeObjectURL(url)};
 $('import').onclick=()=>$('file').click();$('file').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{let x=JSON.parse(await f.text());if(!Array.isArray(x.tasks))throw Error();if(!confirm('La importación sustituirá los datos actuales. ¿Continuar?'))return;data={tasks:x.tasks,notes:typeof x.notes==='string'?x.notes:''};save();$('notes').value=data.notes;render();alert('Copia importada.')}catch{alert('Archivo no válido.')}e.target.value=''};
-$('reset').onclick=()=>{if(confirm('¿Restablecer tareas y notas? Exporta primero una copia si quieres conservarlas.')){data=initial();save();$('notes').value='';selected=monday();render()}};render();renderWorkouts();
+$('reset').onclick=()=>{if(confirm('¿Restablecer tareas y notas? Exporta primero una copia si quieres conservarlas.')){data=initial();save();$('notes').value='';selected=monday();render()}};render();
 </script></body></html>
