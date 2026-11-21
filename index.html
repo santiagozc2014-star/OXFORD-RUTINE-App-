@@ -2,7 +2,10 @@
 <html lang="es">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#171717"><meta name="description" content="Centro de control OXFORD 3.0: estudio, horario, entrenamiento y proyectos.">
+<meta name="theme-color" content="#171717">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon-oxford.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon-oxford.svg"><meta name="description" content="Centro de control OXFORD 3.0: estudio, horario, entrenamiento y proyectos.">
 <title>OXFORD 3.0 · Centro de control</title>
 <style>
 :root{color-scheme:dark;--bg:#171717;--panel:#10251f;--panel2:#1b3028;--line:#3b4b40;--txt:#faf7f0;--muted:#c5c0b5;--accent:#e9c46a;--blue:#a67c32;--green:#087f5b;--red:#8f2929;--good:#4ade80;--warn:#c99b43}
@@ -109,6 +112,14 @@
 <section id="jarvis" class="card"><h2>Proyecto independiente · JARVIS Comando de Voz</h2><p class="muted">Seguimiento del proyecto Android. Este panel no modifica ni mezcla su código con OXFORD.</p><div class="schedule"><b>Repositorio</b><span><a href="https://github.com/santiagozc2014-star/JARVIS-comando-de-voz-" target="_blank" rel="noopener" style="color:var(--accent)">JARVIS-comando-de-voz- · GitHub</a></span></div><div class="schedule"><b>Dispositivo</b><span>Samsung Galaxy A30s · Android 11</span></div><div class="schedule"><b>Objetivo</b><span>Activación por palabra clave “Hey JARVIS” y apertura de ChatGPT, respetando límites de Android y permisos.</span></div><h3>Lista de seguimiento</h3><div id="jarvisTasks"></div><textarea id="jarvisNotes" placeholder="Anota avances, errores de compilación, decisiones y próximos pasos..."></textarea><p class="muted">Las marcas y notas de este apartado se guardan en este navegador.</p></section>
 <section id="datos" class="card"><h2>Notas, copias de seguridad y ajustes</h2><textarea id="notes" placeholder="Notas generales, objetivos y planificación..."></textarea><p class="muted">Los datos se guardan localmente en este navegador. Exporta una copia para conservarlos al cambiar de dispositivo.</p><div class="actions"><button class="secondary" id="export">Exportar copia</button><button class="secondary" id="import">Importar copia</button><button class="danger" id="reset">Restablecer datos</button><input id="file" type="file" accept="application/json,.json" hidden></div></section>
 </main><footer class="foot">OXFORD 3.0 · APRENDER DE VERDAD · progreso sostenible y verificable</footer>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js", { scope: "./" })
+      .catch(error => console.error("No se pudo registrar el service worker:", error));
+  });
+}
+</script>
 <script>
 'use strict';
 const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'],SHORT=['LUN','MAR','MIÉ','JUE','VIE','SÁB','DOM'],KEY='oxford30-data-v2',TODAY=()=>new Date().toISOString().slice(0,10);
