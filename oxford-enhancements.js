@@ -470,14 +470,26 @@
         const output = $("ox-teacher-prompt");
         const status = $("ox-teacher-status");
         output.value = prompt;
+        if (typeof navigator.share === "function") {
+          try {
+            await navigator.share({ title: "Clase OXFORD 3.0", text: prompt });
+            status.textContent = "Menú de compartir completado. Si elegiste ChatGPT, la instrucción se ha compartido allí para iniciar la clase.";
+            return;
+          } catch (error) {
+            if (error && error.name === "AbortError") {
+              status.textContent = "Compartir cancelado; no se ha enviado nada. Puedes copiar la instrucción manualmente.";
+              return;
+            }
+          }
+        }
         try {
           if (!navigator.clipboard || !navigator.clipboard.writeText) throw new Error("Clipboard API no disponible");
           await navigator.clipboard.writeText(prompt);
-          status.textContent = "Instrucción copiada. Abre ChatGPT con el botón inferior y pégala en el chat. Se usarán los datos de estudio guardados en esta app.";
+          status.textContent = "Instrucción copiada. Abre ChatGPT y pégala en el chat. Si aparece en el menú de compartir de Android, también puedes seleccionarlo directamente.";
         } catch (error) {
           output.focus();
           output.select();
-          status.textContent = "No se pudo copiar automáticamente. La instrucción está seleccionada: cópiala y abre ChatGPT.";
+          status.textContent = "Copia el texto seleccionado y ábrelo en ChatGPT.";
         }
       });
 
