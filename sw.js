@@ -1,9 +1,11 @@
-const CACHE_NAME = "oxford30-pwa-v1";
+const CACHE_NAME = "oxford30-pwa-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
-  "./icon-oxford.svg"
+  "./icon-oxford.svg",
+  "./oxford-enhancements.css",
+  "./oxford-enhancements.js"
 ];
 
 self.addEventListener("install", event => {
