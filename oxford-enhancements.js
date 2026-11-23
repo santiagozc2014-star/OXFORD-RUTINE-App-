@@ -512,10 +512,12 @@
     const prompt = buildTeacherPrompt();
     $("ox-teacher-prompt").value = prompt;
     refresh();
+    root.OxfordEnhancements.refresh = refresh;
   }
 
   root.OxfordEnhancements = {
     init,
+    refresh: null,
     addDays,
     mondayOf,
     nextReview,
