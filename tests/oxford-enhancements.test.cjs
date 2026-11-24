@@ -65,3 +65,27 @@ test("unscored sessions do not pretend to prove mastery", () => {
   const sessions = [{ subject: "physics", date: "2026-11-23", score: null, fundamentalErrors: 0 }];
   assert.equal(Oxford.getGuidance(sessions, "physics").kind, "practice");
 });
+
+test("calendar dates reject impossible days and non-leap February 29", () => {
+  assert.equal(Oxford.addDays("2026-02-29", 1), "");
+  assert.equal(Oxford.mondayOf("2026-13-01"), "");
+  assert.deepEqual(Oxford.dueConcepts([{ topic: "Invalid", dueDate: "2026-02-30" }], "2026-03-01"), []);
+});
+
+test("recent mastery can progress after older low scores", () => {
+  const sessions = [
+    { subject: "physics", date: "2026-11-20", score: 55, fundamentalErrors: 0 },
+    { subject: "physics", date: "2026-11-22", score: 91, fundamentalErrors: 0 },
+    { subject: "physics", date: "2026-11-23", score: 94, fundamentalErrors: 0 }
+  ];
+  assert.equal(Oxford.getGuidance(sessions, "physics").kind, "transfer");
+});
+
+test("recent low scores still trigger consolidation despite older mastery", () => {
+  const sessions = [
+    { subject: "mathematics", date: "2026-11-20", score: 98, fundamentalErrors: 0 },
+    { subject: "mathematics", date: "2026-11-22", score: 72, fundamentalErrors: 0 },
+    { subject: "mathematics", date: "2026-11-23", score: 78, fundamentalErrors: 0 }
+  ];
+  assert.equal(Oxford.getGuidance(sessions, "mathematics").kind, "consolidate");
+});
