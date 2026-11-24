@@ -17,10 +17,15 @@
   ];
   const INTERVALS = [1, 3, 7, 14, 30, 60];
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
-  const isDate = value => /^\d{4}-\d{2}-\d{2}$/.test(String(value || ""));
+  function isDate(value) {
+    if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(String(value || ""))) return false;
+    const [year, month, day] = String(value).split("-").map(Number);
+    const date = new Date(Date.UTC(year, month - 1, day));
+    return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+  }
 
   function addDays(dateString, days) {
-    const value = isDate(dateString) ? dateString : "2026-01-01";
+    if (!isDate(dateString)) return "";\n    const value = dateString;
     const [year, month, day] = value.split("-").map(Number);
     const date = new Date(year, month - 1, day);
     date.setDate(date.getDate() + Number(days || 0));
@@ -85,19 +90,23 @@
       explanation: "Hay actividad registrada, pero todavía no hay resultados de evaluación.",
       action: "Haz una comprobación breve sin consultar apuntes y registra el resultado."
     };
-    if (summary.average < 85) return {
-      kind: "consolidate",
-      label: "Consolidación guiada",
-      explanation: "La media registrada está por debajo del objetivo inicial del 85%.",
-      action: "Practica los pasos que fallaron y vuelve a comprobar antes de avanzar."
-    };
-    const twoStrong = summary.recentScored.length >= 2 &&
-      summary.recentScored.slice(0, 2).every(item => Number(item.score) >= 85 && Number(item.fundamentalErrors) === 0);
+    const recentScores = summary.recentScored.slice(0, 3);
+    const twoStrong = recentScores.length >= 2 &&
+      recentScores.slice(0, 2).every(item => Number(item.score) >= 85 && Number(item.fundamentalErrors) === 0);
     if (twoStrong) return {
       kind: "transfer",
       label: "Preparado para transferencia",
-      explanation: "Dos evaluaciones recientes superan el 85% y no registran errores fundamentales.",
+      explanation: "Las dos evaluaciones puntuadas más recientes superan el 85% y no registran errores fundamentales.",
       action: "Prueba un problema nuevo o una aplicación real; aumenta solo una variable de dificultad."
+    };
+    const recentAverage = recentScores.length
+      ? recentScores.reduce((sum, item) => sum + Number(item.score), 0) / recentScores.length
+      : summary.average;
+    if (recentAverage < 85) return {
+      kind: "consolidate",
+      label: "Consolidación guiada",
+      explanation: "Los resultados recientes están por debajo del objetivo inicial del 85%.",
+      action: "Practica los pasos que fallaron y vuelve a comprobar antes de avanzar."
     };
     return {
       kind: "confirm",
