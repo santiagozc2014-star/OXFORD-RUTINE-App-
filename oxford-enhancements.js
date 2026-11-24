@@ -18,14 +18,15 @@
   const INTERVALS = [1, 3, 7, 14, 30, 60];
   const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
   function isDate(value) {
-    if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(String(value || ""))) return false;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(value || ""))) return false;
     const [year, month, day] = String(value).split("-").map(Number);
     const date = new Date(Date.UTC(year, month - 1, day));
     return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
   }
 
   function addDays(dateString, days) {
-    if (!isDate(dateString)) return "";\n    const value = dateString;
+    if (!isDate(dateString)) return "";
+    const value = dateString;
     const [year, month, day] = value.split("-").map(Number);
     const date = new Date(year, month - 1, day);
     date.setDate(date.getDate() + Number(days || 0));
@@ -33,7 +34,8 @@
   }
 
   function mondayOf(dateString) {
-    if (!isDate(dateString)) return "";\n    const value = dateString;
+    if (!isDate(dateString)) return "";
+    const value = dateString;
     const [year, month, day] = value.split("-").map(Number);
     const date = new Date(year, month - 1, day);
     date.setDate(date.getDate() - ((date.getDay() + 6) % 7));
