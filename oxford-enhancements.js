@@ -33,7 +33,7 @@
   }
 
   function mondayOf(dateString) {
-    const value = isDate(dateString) ? dateString : "2026-01-01";
+    if (!isDate(dateString)) return "";\n    const value = dateString;
     const [year, month, day] = value.split("-").map(Number);
     const date = new Date(year, month - 1, day);
     date.setDate(date.getDate() - ((date.getDay() + 6) % 7));
